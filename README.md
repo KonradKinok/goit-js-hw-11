@@ -1,99 +1,200 @@
-# Parcel template
+# goit-js-hw-11
+ zadanie 11 js
 
-Этот проект был создан при помощи Parcel. Для знакомства и настройки
-дополнительных возможностей [обратись к документации](https://parceljs.org/).
+Link do repozytorium:
+https://github.com/KonradKinok/goit-js-hw-11
 
-## Подготовка нового проекта
+Link do strony:
+https://konradkinok.github.io/goit-js-hw-11/
 
-1. Убедись что на компьютере установлена LTS-версия Node.js.
-   [Скачай и установи](https://nodejs.org/en/) её если необходимо.
-2. Склонируй этот репозиторий.
-3. Измени имя папки с `parcel-project-template` на имя своего проекта.
-4. Создай новый пустой репозиторий на GitHub.
-5. Открой проект в VSCode, запусти терминал и свяжи проект с GitHub-репозиторием
-   [по инструкции](https://docs.github.com/en/get-started/getting-started-with-git/managing-remote-repositories#changing-a-remote-repositorys-url).
-6. Установи зависимости проекта в терминале командой `npm install` .
-7. Запусти режим разработки, выполнив команду `npm start`.
-8. Перейди в браузере по адресу [http://localhost:1234](http://localhost:1234).
-   Эта страница будет автоматически перезагружаться после сохранения изменений в
-   файлах проекта.
 
-## Файлы и папки
+**Read in other languages: [Русский](README.md), [Українська](README.ua.md),
+[English](README.en.md), [Español](README.es.md), [Polski](README.pl.md).**
 
-- Все паршалы файлов стилей должны лежать в папке `src/sass` и импортироваться в
-  файлы стилей страниц. Например, для `index.html` файл стилей называется
-  `index.scss`.
-- Изображения добавляй в папку `src/images`. Сборщик оптимизирует их, но только
-  при деплое продакшн версии проекта. Все это происходит в облаке, чтобы не
-  нагружать твой компьютер, так как на слабых машинах это может занять много
-  времени.
+# Kryterium przyjęcia
 
-## Деплой
+- Utworzono repozytorium `goit-js-hw-11`.
+- Przy oddaniu pracy domowej dołączono linki: do plików źródłowych i strony
+  roboczej na `GitHub Pages`.
+- Wiersz poleceń nie zawiera błędów i ostrzeżeń.
+- Projekt utworzono z pomocą
+  [parcel-project-template](https://github.com/goitacademy/parcel-project-template).
+- Do żądań HTTP użyto biblioteki [axios](https://axios-http.com/).
+- Użyto składni `async/await`.
+- Do powiadomień użyto biblioteki
+  [notiflix](https://github.com/notiflix/Notiflix#readme).
+- Sformatowano kod `Prettier`.
 
-Для настройки деплоя проекта необходимо выполнить несколько дополнительных шагов
-по настройке твоего репозитория. Зайди во вкладку `Settings` и в подсекции
-`Actions` выбери выбери пункт `General`.
+# Zadanie - wyszukiwanie obrazów
 
-![GitHub actions settings](./assets/actions-config-step-1.png)
+Utwórz frontend aplikacji wyszukiwania i przeglądania obrazków według słów
+kluczowych. Popraw wizualnie elementy interfejsu. Obejrzyj wersję demonstracyjną wideo o działaniu
+aplikacji.
 
-Пролистай страницу до последней секции, в которой убедись что выбраны опции как
-на следующем изображении и нажми `Save`. Без этих настроек у сборки будет
-недостаточно прав для автоматизации процесса деплоя.
+https://user-images.githubusercontent.com/17479434/125040406-49a6f600-e0a0-11eb-975d-e7d8eaf2af6b.mp4
 
-![GitHub actions settings](./assets/actions-config-step-2.png)
+## Formularz wyszukiwania
 
-Продакшн версия проекта будет автоматически собираться и деплоиться на GitHub
-Pages, в ветку `gh-pages`, каждый раз когда обновляется ветка `main`. Например,
-после прямого пуша или принятого пул-реквеста. Для этого необходимо в файле
-`package.json` отредактировать поле `homepage` и скрипт `build`, заменив
-`your_username` и `your_repo_name` на свои, и отправить изменения на GitHub.
+Formularz początkowo znajduje się w dokumencie HTML. Użytkownik będzie wprowadzał treść, którą chce
+wyszukać, w pole tekstowe, a po wysłaniu formularza koniecznym jest spełnienie żądania HTTP.
 
-```json
-"homepage": "https://your_username.github.io/your_repo_name/",
-"scripts": {
-  "build": "parcel build src/*.html --public-url /your_repo_name/"
-},
+```html
+<form class="search-form" id="search-form">
+  <input
+    type="text"
+    name="searchQuery"
+    autocomplete="off"
+    placeholder="Search images..."
+  />
+  <button type="submit">Search</button>
+</form>
 ```
 
-Далее необходимо зайти в настройки GitHub-репозитория (`Settings` > `Pages`) и
-выставить раздачу продакшн версии файлов из папки `/root` ветки `gh-pages`, если
-это небыло сделано автоматически.
+## Żądania HTTP
 
-![GitHub Pages settings](./assets/repo-settings.png)
+Jako backendu używaj publicznego API serwisu
+[Pixabay](https://pixabay.com/api/docs/). Zarejestruj się, otrzymaj swój
+unikalny klucz dostępu i zapoznaj się z dokumentacją.
 
-### Статус деплоя
+Lista parametrów treści żądania, które należy podać:
 
-Статус деплоя крайнего коммита отображается иконкой возле его идентификатора.
+- `key` - Twój unikalny klucz dostępu do API.
+- `q` - termin, który chce się wyszukać. To, co będzie wpisywał użytkownik.
+- `image_type` - typ obrazka. Chcemy tylko zdjęć, dlatego określ
+  wartość `photo`.
+- `orientation` - orientacja zdjęcia. Określ wartość `horizontal`.
+- `safesearch` - weryfikacja wieku. Określ wartość `true`.
 
-- **Желтый цвет** - выполняется сборка и деплой проекта.
-- **Зеленый цвет** - деплой завершился успешно.
-- **Красный цвет** - во время линтинга, сборки или деплоя произошла ошибка.
+W odpowiedzi pojawi się tablica obrazów odpowiadających kryteriom parametrów żądania.
+Każdy obraz opisany jest obiektem, z których interesują cię tylko
+następujące właściwości:
 
-Более детальную информацию о статусе можно посмотреть кликнув по иконке, и в
-выпадающем окне перейти по ссылке `Details`.
+- `webformatURL` - link do małego obrazka.
+- `largeImageURL` - link do dużego obrazka.
+- `tags` - wiersz z opisem obrazka. Będzie pasować do atrybutu `alt`.
+- `likes` - liczba lajków.
+- `views` - liczba wyświetleń.
+- `comments` - liczba komentarzy.
+- `downloads` - liczba pobrań.
 
-![Deployment status](./assets/status.png)
+Jeśli backend przekazuje pustą tablicę, oznacza to, że nic odpowiedniego nie znaleziono.
+W takim wypadku pokaż powiadomienie o treści
+`"Sorry, there are no images matching your search query. Please try again."`.
+Do powiadomień używaj biblioteki
+[notiflix](https://github.com/notiflix/Notiflix#readme).
 
-### Живая страница
+## Galeria i obraz karty
 
-Через какое-то время, обычно пару минут, живую страницу можно будет посмотреть
-по адресу указанному в отредактированном свойстве `homepage`. Например, вот
-ссылка на живую версию для этого репозитория
-[https://goitacademy.github.io/parcel-project-template](https://goitacademy.github.io/parcel-project-template).
+Element `div.gallery` znajduje się początkowo w dokumencie HTML, należy
+wykonać w nim znacznik obrazu karty. Przy wyszukiwaniu według nowego słowa kluczowego,
+należy całkowicie wyczyścić zawartość galerii, aby nie mieszać wyników.
 
-Если открывается пустая страница, убедись что во вкладке `Console` нет ошибок
-связанных с неправильными путями к CSS и JS файлам проекта (**404**). Скорее
-всего у тебя неправильное значение свойства `homepage` или скрипта `build` в
-файле `package.json`.
+```html
+<div class="gallery">
+  <!-- Obraz karty -->
+</div>
+```
 
-## Как это работает
+Szablon znacznika karty jednego obrazka do galerii.
 
-![How it works](./assets/how-it-works.png)
+```html
+<div class="photo-card">
+  <img src="" alt="" loading="lazy" />
+  <div class="info">
+    <p class="info-item">
+      <b>Likes</b>
+    </p>
+    <p class="info-item">
+      <b>Views</b>
+    </p>
+    <p class="info-item">
+      <b>Comments</b>
+    </p>
+    <p class="info-item">
+      <b>Downloads</b>
+    </p>
+  </div>
+</div>
+```
 
-1. После каждого пуша в ветку `main` GitHub-репозитория, запускается специальный
-   скрипт (GitHub Action) из файла `.github/workflows/deploy.yml`.
-2. Все файлы репозитория копируются на сервер, где проект инициализируется и
-   проходит сборку перед деплоем.
-3. Если все шаги прошли успешно, собранная продакшн версия файлов проекта
-   отправляется в ветку `gh-pages`. В противном случае, в логе выполнения
-   скрипта будет указано в чем проблема.
+## Paginacja
+
+Pixabay API podtrzymuje paginację i dostarcza parametry `page` i
+`per_page`. Zrób tak, aby w każdej odpowiedzi pojawiało się po 40 obiektów 
+(domyślnie 20).
+
+- Początkowo wartość parametru `page` powinna wynosić `1`.
+- Przy każdym kolejnym żądaniu, koniecznym jest zwiększenie wartości o `1`.
+- Przy wyszukiwaniu według nowego słowa kluczowego wartość `page` należy cofnąć do początkowego stanu,
+  ponieważ będzie miała miejsce paginacja według nowej kolekcji obrazków.
+
+W dokumencie HTML istnieje już znacznik przycisku, po kliknięciu którego koniecznym jest
+spełnienie żądania według następnej grupy obrazków i dodanie znacznika do już
+istniejących elementów galerii.
+
+```html
+<button type="button" class="load-more">Load more</button>
+```
+
+- Początkowo przycisk powinien być ukryty.
+- Po pierwszym żądaniu przycisk pojawia się w interfejsie pod galerią.
+- Po ponownym wysłaniu formularza przycisk najpierw się ukrywa, a po spełnieniu żądania ponownie
+  się wyświetla.
+
+W odpowiedzi backend przekazuje właściwość `totalHits` - wspólną liczbę obrazków,
+które odpowiadają kryteriom wyszukiwania (dla bezpłatnego konta). Jeśli
+użytkownik doszedł do końca kolekcji, ukryj przycisk i pokaż powiadomienie o
+treści `"We're sorry, but you've reached the end of search results."`.
+
+## Dodatkowo
+
+> ⚠️ Następna funkcja nie jest obowiązkowa przy oddawaniu zadania, ale będzie dobrą
+> dodatkową praktyką.
+
+### Powiadomienie
+
+Po pierwszym żądaniu przy każdym nowym wyszukiwaniu pokaż powiadomienie, w którym
+będzie napisane ile w sumie znaleziono obrazków (właściwość `totalHits`). Tekst
+powiadomienia `"Hooray! We found totalHits images."`
+
+### Biblioteka `SimpleLightbox`
+
+Dodaj funkcję wyświetlania większej wersji obrazka z biblioteką
+[SimpleLightbox](https://simplelightbox.com/).
+
+- W znaczniku trzeba będzie zamienić każdy obraz karty w link, tak jak
+  pokazano w dokumentacji.
+- Biblioteka zawiera metodę `refresh()` którą trzeba koniecznie zrealizować za każdym
+  razem po dodaniu nowej grupy obrazów karty.
+
+Aby połączyć kod CSS biblioteki z projektem, koniecznym jest dodanie jeszcze
+jednego importu, oprócz tego opisanego w dokumentacji.
+
+```js
+// Opisany w dokumentacji
+import SimpleLightbox from 'simplelightbox';
+// Dodatkowy import stylów
+import 'simplelightbox/dist/simple-lightbox.min.css';
+```
+
+### Przewijanie strony
+
+Stwórz płynne przewijanie strony po spełnieniu żądania i po renderowaniu każdej następnej 
+grupy obrazków. Oto kod-wskazówka, uporaj się z nią samodzielnie.
+
+```js
+const { height: cardHeight } = document
+  .querySelector('.gallery')
+  .firstElementChild.getBoundingClientRect();
+
+window.scrollBy({
+  top: cardHeight * 2,
+  behavior: 'smooth',
+});
+```
+
+### Nieskończone przewijanie
+
+Zamiast przycisku «Load more» można zrobić nieskończone przewijanie obrazów podczas
+przewijania strony. Zapewniamy Ci pełną swobodę w realizacji,
+możesz użyć dowolnej biblioteki.
