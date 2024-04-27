@@ -15,16 +15,6 @@
     --button-color: rgba(153, 137, 213, 0.69);
     --button-hover-color: rgba(153, 137, 213, 0.90);
     --black: #rgba(0, 0, 0,1);
-
-    --iris: #4D5AE5;
-    --navy-blue: #2E2F42;
-    --ocean: #404BBF;
-    --slate: #434455;
-    --cornflower: #E7E9FC;
-    --green: #31D0AA;
-    --light-slate: #8E8F99;
-    --dairy: #FCFCFC;
-    --grey: #2e2f42;
 }
 
 /* Globalne resetowanie stylow */
@@ -46,11 +36,6 @@ img {
     height: auto;
 }
 
-button {
-    
-    // border-radius: 4px;
-}
-
 ul,
 ol {
     list-style: none;
@@ -63,9 +48,4 @@ body {
     color: var(--black);
     background: var(--white);
     
-}
-
-/* Link */
-.link {
-    text-decoration: none;
 }
