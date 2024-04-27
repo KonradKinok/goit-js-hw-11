@@ -7,14 +7,20 @@
 }
 
 :root {
-    --cloud: #F4F4FD;
-    --cornflower: #E7E9FC;
+    --white: rgba(255, 255, 255, 1);
+    --cloud: rgba(244, 244, 253, 1);
+    --nav-color: rgba(90, 90, 231, 0.9);
+    --input-border-color: rgba(46, 47, 66, 0.4);
+    --input-border-focus-color: rgba(46, 47, 66, 1);
+    --button-color: rgba(153, 137, 213, 0.69);
+    --button-hover-color: rgba(153, 137, 213, 0.90);
+    --black: #rgba(0, 0, 0,1);
 
     --iris: #4D5AE5;
     --navy-blue: #2E2F42;
     --ocean: #404BBF;
     --slate: #434455;
-    --white: #FFFFFF;
+    --cornflower: #E7E9FC;
     --green: #31D0AA;
     --light-slate: #8E8F99;
     --dairy: #FCFCFC;
@@ -54,7 +60,7 @@ ol {
 
 body {
     font-family: 'Roboto', sans-serif;
-    color: var(--slate);
+    color: var(--black);
     background: var(--white);
     
 }
