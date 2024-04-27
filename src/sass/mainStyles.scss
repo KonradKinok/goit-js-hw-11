@@ -1,0 +1,65 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --cloud: #F4F4FD;
+    --cornflower: #E7E9FC;
+
+    --iris: #4D5AE5;
+    --navy-blue: #2E2F42;
+    --ocean: #404BBF;
+    --slate: #434455;
+    --white: #FFFFFF;
+    --green: #31D0AA;
+    --light-slate: #8E8F99;
+    --dairy: #FCFCFC;
+    --grey: #2e2f42;
+}
+
+/* Globalne resetowanie stylow */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+button {
+    
+    // border-radius: 4px;
+}
+
+ul,
+ol {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: var(--slate);
+    background: var(--white);
+    
+}
+
+/* Link */
+.link {
+    text-decoration: none;
+}
