@@ -13,7 +13,7 @@ const apiKey = '43602379-82b2565bd0b0a0b53c6c265a8';
  * @param {string} breedId
  * @returns object
  */
-export async function fetchAllPictures(query) {
+export async function fetchAllPictures(query, currentPage) {
   const searchParams = new URLSearchParams({
     key: apiKey,
     q: query,
@@ -21,7 +21,7 @@ export async function fetchAllPictures(query) {
     orientation: 'horizontal',
     safesearch: 'true',
     per_page: 40,
-    page: '1',
+    page: currentPage,
   });
   const url = `https://pixabay.com/api/?${searchParams}`;
   console.log(url);

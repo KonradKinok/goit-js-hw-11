@@ -13,6 +13,8 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const form = document.querySelector('form#search-form');
 const gallery = document.querySelector('div.gallery');
 
+let currentPage = 1;
+
 form.addEventListener('submit', ev => {
   ev.preventDefault();
   gallery.innerHTML = null;
@@ -22,8 +24,9 @@ form.addEventListener('submit', ev => {
 });
 
 function getPromisePictures(query) {
+  currentPage = 1;
   pixabayMethods
-    .fetchAllPictures(query)
+    .fetchAllPictures(query, currentPage)
     .then(picturesColection => {
       console.log(picturesColection);
       renderPictures(picturesColection);
@@ -35,6 +38,10 @@ function getPromisePictures(query) {
 
 function renderPictures(dataPictures) {
   console.log(dataPictures.total, dataPictures.totalHits);
+  Notify.success(
+    `Hooray! We found ${dataPictures.totalHits} images.`,
+    optionsNotify
+  );
   const markup = dataPictures.hits
     .map(
       ({
@@ -82,3 +89,36 @@ function renderPictures(dataPictures) {
 
   gallery.insertAdjacentHTML('beforeend', markup);
 }
+
+const { height: cardHeight } =
+  gallery.firstElementChild.getBoundingClientRect();
+
+window.scrollBy({
+  top: cardHeight * 2,
+  behavior: 'smooth',
+});
+
+// Funkcja pobierająca kolejną stronę obrazków
+function loadNextPage(query) {
+  pixabayMethods
+    .fetchAllPictures(query, currentPage) // Pobieramy kolejną stronę
+    .then(picturesCollection => {
+      renderPictures(picturesCollection);
+      currentPage++; // Zwiększamy numer strony
+    })
+    .catch(error => {
+      Notify.failure(`${error}`, optionsNotify);
+    });
+}
+
+// Funkcja sprawdzająca, czy użytkownik zbliżył się do końca strony
+function handleScroll() {
+  const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+  if (scrollTop + clientHeight >= scrollHeight - 5) {
+    const query = form.elements.searchQuery.value;
+    loadNextPage(query); // Wczytujemy kolejną stronę obrazków
+  }
+}
+
+// Nasłuchujemy zdarzenia przewijania okna
+window.addEventListener('scroll', handleScroll);
