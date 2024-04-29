@@ -1,10 +1,11 @@
 'use strict';
 import axios from 'axios';
 import * as pixabayMethods from './pixabay';
+import throttle from 'lodash.throttle';
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 const optionsNotify = {
-  timeout: 4000,
+  timeout: 3000,
 };
 
 import SimpleLightbox from 'simplelightbox';
@@ -20,28 +21,61 @@ form.addEventListener('submit', ev => {
   gallery.innerHTML = null;
   const query = ev.currentTarget.elements.searchQuery.value;
   console.log(query);
-  getPromisePictures(query);
+  currentPage = 1;
+  loadNextPage(query);
 });
 
-function getPromisePictures(query) {
-  currentPage = 1;
+// Funkcja pobierająca kolejną stronę obrazków wieża kamienna morze
+function loadNextPage(query) {
+  console.log('loadNextPage', query);
   pixabayMethods
-    .fetchAllPictures(query, currentPage)
-    .then(picturesColection => {
-      console.log(picturesColection);
-      renderPictures(picturesColection);
+    .fetchPicturesPerPage(query, currentPage) // Pobieramy kolejną stronę
+    .then(picturesCollection => {
+      console.log(
+        'picturesCollection.hits.length',
+        picturesCollection.hits.length
+      );
+      if (picturesCollection.hits.length > 0) {
+        renderPictures(picturesCollection);
+        if (currentPage === 1) {
+          Notify.success(
+            `Hooray! We found ${picturesCollection.totalHits} images.`,
+            optionsNotify
+          );
+        } else {
+          smoothScroll();
+        }
+      } else {
+        if (currentPage === 1) {
+          Notify.info(
+            `No results found. Try searching using different query data.`,
+            optionsNotify
+          );
+        } else {
+          Notify.info(
+            `We're sorry, but you've reached the end of search results.`,
+            optionsNotify
+          );
+        }
+      }
+
+      currentPage++;
+      console.log('currentPage', currentPage);
     })
     .catch(error => {
-      Notify.failure(`${error}`, optionsNotify);
+      if (error.message.includes('400')) {
+        Notify.info(
+          `We're sorry, but you've reached the end of search results.`,
+          optionsNotify
+        );
+      } else {
+        Notify.failure(`${error}`, optionsNotify);
+      }
     });
 }
-
 function renderPictures(dataPictures) {
   console.log(dataPictures.total, dataPictures.totalHits);
-  Notify.success(
-    `Hooray! We found ${dataPictures.totalHits} images.`,
-    optionsNotify
-  );
+
   const markup = dataPictures.hits
     .map(
       ({
@@ -53,7 +87,6 @@ function renderPictures(dataPictures) {
         comments,
         downloads,
       }) => {
-        console.log(tags);
         return `  <div class="photo-card">
           <img src="${webformatURL}" alt="${tags}" loading="lazy" />
           <div class="info">
@@ -90,27 +123,6 @@ function renderPictures(dataPictures) {
   gallery.insertAdjacentHTML('beforeend', markup);
 }
 
-const { height: cardHeight } =
-  gallery.firstElementChild.getBoundingClientRect();
-
-window.scrollBy({
-  top: cardHeight * 2,
-  behavior: 'smooth',
-});
-
-// Funkcja pobierająca kolejną stronę obrazków
-function loadNextPage(query) {
-  pixabayMethods
-    .fetchAllPictures(query, currentPage) // Pobieramy kolejną stronę
-    .then(picturesCollection => {
-      renderPictures(picturesCollection);
-      currentPage++; // Zwiększamy numer strony
-    })
-    .catch(error => {
-      Notify.failure(`${error}`, optionsNotify);
-    });
-}
-
 // Funkcja sprawdzająca, czy użytkownik zbliżył się do końca strony
 function handleScroll() {
   const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
@@ -119,6 +131,19 @@ function handleScroll() {
     loadNextPage(query); // Wczytujemy kolejną stronę obrazków
   }
 }
-
+const handleScrollThrottled = throttle(() => {
+  handleScroll();
+}, 1500); // 200 ms opóźnienia
 // Nasłuchujemy zdarzenia przewijania okna
-window.addEventListener('scroll', handleScroll);
+window.addEventListener('scroll', handleScrollThrottled);
+
+function smoothScroll() {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+  console.log('cardHeight', cardHeight);
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
+}

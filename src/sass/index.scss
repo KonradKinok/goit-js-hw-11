@@ -104,3 +104,19 @@
 .info-item{
     text-align: center;
 }
+
+
+@media screen and (max-width: 767px) {
+.main-container{
+    max-width: 400px;
+}
+    .gallery
+     {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin:0 auto;
+            padding: 0;
+            justify-content: center;
+        }
+}
