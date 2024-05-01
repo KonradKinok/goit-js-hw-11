@@ -16,6 +16,7 @@ const form = document.querySelector('form#search-form');
 const gallery = document.querySelector('div.gallery');
 
 //Global variables
+let query = '';
 let currentPage = 1;
 let lightbox;
 let stopRenederingPage = false;
@@ -26,7 +27,7 @@ let lastTouchY = 0;
 form.addEventListener('submit', ev => {
   ev.preventDefault();
   gallery.innerHTML = null;
-  const query = ev.currentTarget.elements.searchQuery.value;
+  query = ev.currentTarget.elements.searchQuery.value;
   currentPage = 1;
   stopRenederingPage = false;
   loadNextPage(query);
@@ -38,17 +39,29 @@ const handleScrollThrottled = throttle(() => {
 }, 1500);
 //WindowListener
 window.addEventListener('scroll', handleScrollThrottled);
-window.addEventListener('touchmove', event => {
-  const touchY = event.touches[0].clientY;
-  const windowHeight = window.innerHeight;
-  const scrollHeight = document.documentElement.scrollHeight;
-  if (touchY >= scrollHeight - windowHeight) {
+window.addEventListener('touchend', event => {
+  const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
+  // Oblicz odległość do ostatniego obrazka w galerii
+  const lastImageOffset =
+    gallery.lastElementChild.offsetTop + gallery.lastElementChild.offsetHeight;
+  const pageEndOffset = lastImageOffset - clientHeight;
+
+  // Sprawdź, czy użytkownik przewinął stronę do końca oraz czy jest na końcu galerii
+  if (
+    scrollTop + clientHeight >= scrollHeight - 5 &&
+    scrollTop > lastScrollTop &&
+    scrollTop >= pageEndOffset
+  ) {
     const query = form.elements.searchQuery.value;
-    loadNextPage(query);
-    // handleScrollThrottled();
+    // loadNextPage(query);
   }
-  lastTouchY = touchY;
+
+  // Aktualizuj lastScrollTop
+  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+  loadNextPage(query);
 });
+
 //Funkcje
 /**
  * loadNextPage
@@ -176,7 +189,6 @@ function handleScroll() {
     scrollTop + clientHeight >= scrollHeight - 5 &&
     scrollTop > lastScrollTop
   ) {
-    const query = form.elements.searchQuery.value;
     loadNextPage(query);
   }
   lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
