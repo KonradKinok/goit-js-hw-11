@@ -20,7 +20,7 @@ let currentPage = 1;
 let lightbox;
 let stopRenederingPage = false;
 let lastScrollTop = 0;
-
+let lastTouchY = 0;
 //Listeners
 //FormListener
 form.addEventListener('submit', ev => {
