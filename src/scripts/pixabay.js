@@ -1,17 +1,15 @@
 'use strict';
+//Import
 import axios from 'axios';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
-const optionsNotify = {
-  timeout: 4000,
-};
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
+//ApiKey
 const apiKey = '43602379-82b2565bd0b0a0b53c6c265a8';
 
-/**fetchCatByBreed
- *
- * @param {string} breedId
- * @returns object
+//Functions
+/**
+ * fetchPicturesPerPage
+ * @param {string} query - Zapytanie wyszukiwania obrazów
+ * @param {number} currentPage - Numer bieżącej strony
+ * @returns {Promise<object>} Obiekt zawierający dane o obrazach
  */
 export async function fetchPicturesPerPage(query, currentPage) {
   const searchParams = new URLSearchParams({
@@ -24,7 +22,6 @@ export async function fetchPicturesPerPage(query, currentPage) {
     page: currentPage,
   });
   const url = `https://pixabay.com/api/?${searchParams}`;
-  console.log(url);
   const response = await axios.get(url);
   return response.data;
 }

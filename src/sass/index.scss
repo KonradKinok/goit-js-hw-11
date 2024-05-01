@@ -69,18 +69,18 @@
     flex-wrap: wrap;
     gap: 10px;
 }
+
 .photo-card{
     display: flex;
     flex-flow: column wrap;
     gap: 10px;
-    //  flex-basis: calc((100% - 3*10px) / 4);
     margin-bottom: 20px;
     border-radius: 10px;
     background: var(--cloud);
     overflow: hidden;
     box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
     transition: box-shadow 500ms cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
+    
 }
 
 .photo-card:hover{
@@ -91,6 +91,12 @@
     width: 300px;
     height: 200px;
     object-fit: cover;
+}
+
+.gallery a {
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
 }
 
 .info {
