@@ -38,22 +38,12 @@ form.addEventListener('submit', ev => {
 //--------------------------------------------
 //Lodash
 const handleScrollThrottled = throttle(() => {
-  handleScroll();
+  handleScroll(false);
 }, 1500);
 //WindowListener
 window.addEventListener('scroll', handleScrollThrottled);
 window.addEventListener('touchmove', () => {
-  const windowHeight = window.innerHeight;
-  const scrollHeight = document.documentElement.scrollHeight;
-  const scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-  const lastImageOffset =
-    gallery.lastElementChild.offsetTop + gallery.lastElementChild.offsetHeight;
-
-  const isLastImageVisible = lastImageOffset <= windowHeight + scrollTop;
-  if (isLastImageVisible) {
-    loadNextPage(query);
-  }
+  handleScroll(true);
 });
 
 //Funkcje
@@ -177,15 +167,30 @@ function renderPictures(dataPictures) {
  * * Obsługuje zdarzenie przewijania strony w dół, aby automatycznie wczytywać kolejną stronę obrazków, gdy użytkownik dojdzie do końca strony.
  * @returns {void}
  */
-function handleScroll() {
-  const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-  if (
-    scrollTop + clientHeight >= scrollHeight - 5 &&
-    scrollTop > lastScrollTop
-  ) {
-    loadNextPage(query);
+function handleScroll(mobile) {
+  if (!mobile) {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+    if (
+      scrollTop + clientHeight >= scrollHeight - 5 &&
+      scrollTop > lastScrollTop
+    ) {
+      loadNextPage(query);
+    }
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+  } else {
+    const windowHeight = window.innerHeight;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    const lastImageOffset =
+      gallery.lastElementChild.offsetTop +
+      gallery.lastElementChild.offsetHeight;
+
+    const isLastImageVisible = lastImageOffset <= windowHeight + scrollTop;
+    if (isLastImageVisible) {
+      loadNextPage(query);
+    }
   }
-  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 }
 
 /**
