@@ -33,9 +33,6 @@ form.addEventListener('submit', ev => {
   loadNextPage(query);
 });
 
-//------------------------------------
-
-//--------------------------------------------
 //Lodash
 const handleScrollThrottled = throttle(() => {
   handleScroll(false);
@@ -165,10 +162,11 @@ function renderPictures(dataPictures) {
 /**
  * handleScroll
  * * Obsługuje zdarzenie przewijania strony w dół, aby automatycznie wczytywać kolejną stronę obrazków, gdy użytkownik dojdzie do końca strony.
+ * @param {boolean} isMobile - Sprawdzenie czy użytkownik obsługuje stronę na telefonie komórkowym.
  * @returns {void}
  */
-function handleScroll(mobile) {
-  if (!mobile) {
+function handleScroll(isMobile) {
+  if (!isMobile) {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
     if (
       scrollTop + clientHeight >= scrollHeight - 5 &&
@@ -179,7 +177,6 @@ function handleScroll(mobile) {
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
   } else {
     const windowHeight = window.innerHeight;
-    const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
     const lastImageOffset =
