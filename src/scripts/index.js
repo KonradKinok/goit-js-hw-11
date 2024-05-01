@@ -39,11 +39,13 @@ const handleScrollThrottled = throttle(() => {
 //WindowListener
 window.addEventListener('scroll', handleScrollThrottled);
 window.addEventListener('touchmove', event => {
-  const touchY = event.touches[0].clientY;
-  if (touchY > lastTouchY) {
-    handleScrollThrottled();
-  }
-  lastTouchY = touchY;
+  const query = form.elements.searchQuery.value;
+  loadNextPage(query);
+  // const touchY = event.touches[0].clientY;
+  // if (touchY > lastTouchY) {
+  //   handleScrollThrottled();
+  // }
+  // lastTouchY = touchY;
 });
 //Funkcje
 /**
