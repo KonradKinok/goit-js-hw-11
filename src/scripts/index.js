@@ -42,24 +42,9 @@ const handleScrollThrottled = throttle(() => {
 }, 1500);
 //WindowListener
 window.addEventListener('scroll', handleScrollThrottled);
-// window.addEventListener('touchend', event => {
-//   const windowHeight = window.innerHeight;
-//   const scrollHeight = document.documentElement.scrollHeight;
-//   const scrollTop = window.scrrollY || document.documentElement.scrollTop;
-
-//   // Obliczamy odległość od góry dokumentu do ostatniego obrazka
-//   const lastImageOffset =
-//     gallery.lastElementChild.offsetTop + gallery.lastElementChild.offsetHeight;
-
-//   // Sprawdzamy czy ostatni obrazek jest widoczny na ekranie
-//   const isLastImageVisible = lastImageOffset <= windowHeight + scrollTop;
-
-//   // Jeśli ostatni obrazek jest widoczny i użytkownik przewinął stronę do końca, to ładujemy kolejną stronę obrazków
-//   if (isLastImageVisible && windowHeight + scrollTop >= scrollHeight) {
-//     const query = form.elements.searchQuery.value;
-//     loadNextPage(query);
-//   }
-// });
+window.addEventListener('touchend', event => {
+  handleScroll();
+});
 
 //Funkcje
 /**
