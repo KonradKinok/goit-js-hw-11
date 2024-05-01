@@ -54,12 +54,11 @@ window.addEventListener('touchend', event => {
     scrollTop >= pageEndOffset
   ) {
     const query = form.elements.searchQuery.value;
-    // loadNextPage(query);
+    loadNextPage(query);
   }
 
   // Aktualizuj lastScrollTop
   lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-  loadNextPage(query);
 });
 
 //Funkcje
