@@ -42,8 +42,23 @@ const handleScrollThrottled = throttle(() => {
 }, 1500);
 //WindowListener
 window.addEventListener('scroll', handleScrollThrottled);
-window.addEventListener('touchend', event => {
-  handleScroll();
+window.addEventListener('touchend', () => {
+  // Pobieramy wysokość okna przeglądarki, wysokość przewijanej strony oraz aktualne położenie górnego marginesu
+  const windowHeight = window.innerHeight;
+  const scrollHeight = document.documentElement.scrollHeight;
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+  // Obliczamy odległość od góry dokumentu do ostatniego obrazka
+  const lastImageOffset =
+    gallery.lastElementChild.offsetTop + gallery.lastElementChild.offsetHeight;
+
+  // Sprawdzamy czy ostatni obrazek jest widoczny na ekranie
+  const isLastImageVisible = lastImageOffset <= windowHeight + scrollTop;
+
+  // Jeśli ostatni obrazek jest widoczny i użytkownik przewinął stronę do końca, to ładujemy kolejną stronę obrazków
+  if (isLastImageVisible) {
+    loadNextPage(query);
+  }
 });
 
 //Funkcje
@@ -169,6 +184,10 @@ function renderPictures(dataPictures) {
  */
 function handleScroll() {
   const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+  console.log('scrollTop', scrollTop);
+  console.log('clientHeight', clientHeight);
+  console.log('scrollHeight', scrollHeight);
+  console.log('lastScrollTop', lastScrollTop);
   if (
     scrollTop + clientHeight >= scrollHeight - 5 &&
     scrollTop > lastScrollTop
