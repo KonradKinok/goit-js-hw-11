@@ -33,30 +33,75 @@ form.addEventListener('submit', ev => {
   loadNextPage(query);
 });
 
+//------------------------------------
+document.addEventListener('touchstart', touch2Mouse, true);
+document.addEventListener('touchmove', touch2Mouse, true);
+document.addEventListener('touchend', touch2Mouse, true);
+function touch2Mouse(e) {
+  var theTouch = e.changedTouches[0];
+  var mouseEv;
+
+  switch (e.type) {
+    case 'touchstart':
+      mouseEv = 'mousedown';
+      break;
+    case 'touchend':
+      mouseEv = 'mouseup';
+      break;
+    case 'touchmove':
+      mouseEv = 'mousemove';
+      break;
+    default:
+      return;
+  }
+
+  var mouseEvent = document.createEvent('MouseEvent');
+  mouseEvent.initMouseEvent(
+    mouseEv,
+    true,
+    true,
+    window,
+    1,
+    theTouch.screenX,
+    theTouch.screenY,
+    theTouch.clientX,
+    theTouch.clientY,
+    false,
+    false,
+    false,
+    false,
+    0,
+    null
+  );
+  theTouch.target.dispatchEvent(mouseEvent);
+
+  e.preventDefault();
+}
+//--------------------------------------------
 //Lodash
 const handleScrollThrottled = throttle(() => {
   handleScroll();
 }, 1500);
 //WindowListener
 window.addEventListener('scroll', handleScrollThrottled);
-window.addEventListener('touchend', event => {
-  const windowHeight = window.innerHeight;
-  const scrollHeight = document.documentElement.scrollHeight;
-  const scrollTop = window.scrrollY || document.documentElement.scrollTop;
+// window.addEventListener('touchend', event => {
+//   const windowHeight = window.innerHeight;
+//   const scrollHeight = document.documentElement.scrollHeight;
+//   const scrollTop = window.scrrollY || document.documentElement.scrollTop;
 
-  // Obliczamy odległość od góry dokumentu do ostatniego obrazka
-  const lastImageOffset =
-    gallery.lastElementChild.offsetTop + gallery.lastElementChild.offsetHeight;
+//   // Obliczamy odległość od góry dokumentu do ostatniego obrazka
+//   const lastImageOffset =
+//     gallery.lastElementChild.offsetTop + gallery.lastElementChild.offsetHeight;
 
-  // Sprawdzamy czy ostatni obrazek jest widoczny na ekranie
-  const isLastImageVisible = lastImageOffset <= windowHeight + scrollTop;
+//   // Sprawdzamy czy ostatni obrazek jest widoczny na ekranie
+//   const isLastImageVisible = lastImageOffset <= windowHeight + scrollTop;
 
-  // Jeśli ostatni obrazek jest widoczny i użytkownik przewinął stronę do końca, to ładujemy kolejną stronę obrazków
-  if (isLastImageVisible && windowHeight + scrollTop >= scrollHeight) {
-    const query = form.elements.searchQuery.value;
-    loadNextPage(query);
-  }
-});
+//   // Jeśli ostatni obrazek jest widoczny i użytkownik przewinął stronę do końca, to ładujemy kolejną stronę obrazków
+//   if (isLastImageVisible && windowHeight + scrollTop >= scrollHeight) {
+//     const query = form.elements.searchQuery.value;
+//     loadNextPage(query);
+//   }
+// });
 
 //Funkcje
 /**
