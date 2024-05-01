@@ -40,7 +40,9 @@ const handleScrollThrottled = throttle(() => {
 window.addEventListener('scroll', handleScrollThrottled);
 window.addEventListener('touchmove', event => {
   const touchY = event.touches[0].clientY;
-  if (touchY > lastTouchY) {
+  const windowHeight = window.innerHeight;
+  const scrollHeight = document.documentElement.scrollHeight;
+  if (touchY >= scrollHeight - windowHeight) {
     const query = form.elements.searchQuery.value;
     loadNextPage(query);
     // handleScrollThrottled();
