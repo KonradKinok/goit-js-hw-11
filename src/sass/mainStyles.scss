@@ -10,6 +10,7 @@
     --white: rgba(255, 255, 255, 1);
     --cloud: rgba(244, 244, 253, 1);
     --nav-color: rgba(90, 90, 231, 0.9);
+    --footer-color: rgba(90, 90, 231, 1);
     --input-border-color: rgba(46, 47, 66, 0.4);
     --input-border-focus-color: rgba(46, 47, 66, 1);
     --button-color: rgba(153, 137, 213, 0.69);
@@ -47,6 +48,50 @@ body {
     font-family: 'Roboto', sans-serif;
     color: var(--black);
     background: var(--white);
-    
+   
+    height: 100%;
 }
 
+ /* Footer */
+ .footer {
+     background-color:var(--footer-color);
+
+     padding: 10px;
+     color: cornsilk;
+    
+    justify-self: flex-end;
+ }
+
+ .contener-shadow-text2 {
+     color: var(--white);
+     text-shadow: 2px 2px 8px var(--white);
+
+ }
+
+ .link-footer {
+     display: inline-block;
+ }
+
+ .display-footer {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 48px 24px;
+     text-align: center;
+
+ }
+.footer-logo{
+    display: flex;
+    flex-flow: column nowrap;
+    width: 32px;
+    align-items: center;
+}
+ .display-footer2 {
+     display: flex;
+     text-align: center;
+ }
+
+ .footer-selection::selection {
+     color: var(--white);
+     text-shadow: 2px 2px 8px var(--white);
+     background: var(--black);
+ }
