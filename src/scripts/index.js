@@ -14,6 +14,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 //DOM
 const form = document.querySelector('form#search-form');
 const gallery = document.querySelector('div.gallery');
+const footer = document.querySelector('footer');
 
 //Global variables
 let query = '';
@@ -26,6 +27,7 @@ let lastTouchY = 0;
 //FormListener
 form.addEventListener('submit', ev => {
   ev.preventDefault();
+  addClass(footer);
   gallery.innerHTML = null;
   query = ev.currentTarget.elements.searchQuery.value;
   currentPage = 1;
@@ -78,6 +80,7 @@ async function loadNextPage(query) {
         } else {
           messageNotify = `We're sorry, but you've reached the end of search results.`;
           stopRenederingPage = true;
+          removeClass(footer);
         }
         Notify.info(messageNotify, optionsNotify);
       }
@@ -87,6 +90,7 @@ async function loadNextPage(query) {
       if (error.message.includes('400')) {
         messageNotify = `We're sorry, but you've reached the end of search results.`;
         Notify.info(messageNotify, optionsNotify);
+        removeClass(footer);
       } else {
         messageNotify = error;
         Notify.failure(messageNotify, optionsNotify);
@@ -203,4 +207,30 @@ function smoothScroll() {
     top: cardHeight * 2,
     behavior: 'smooth',
   });
+}
+
+/**
+ *addClass
+ * * Dodaje klasę do określonego elementu HTML, jeśli nie jest już obecna.
+ * @param {HTMLElement} nameTag - Element HTML, do którego ma być dodana klasa.
+ * @param {string} className - Nazwa klasy do dodania (domyślnie 'hidden').
+ * @returns {void}
+ */
+function addClass(nameTag, className = 'hidden') {
+  if (!nameTag.classList.contains(className)) {
+    nameTag.classList.add(className);
+  }
+}
+
+/**
+ *removeClass
+ * * Usuwa określoną klasę z elementu HTML, jeśli jest obecna.
+ * @param {HTMLElement} nameTag - Element HTML, z którego ma być usunięta klasa.
+ * @param {string} className - Nazwa klasy do usunięcia (domyślnie 'hidden').
+ * @returns {void}
+ */
+function removeClass(nameTag, className = 'hidden') {
+  if (nameTag.classList.contains(className)) {
+    nameTag.classList.remove(className);
+  }
 }
